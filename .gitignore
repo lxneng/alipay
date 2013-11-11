@@ -1,0 +1,10 @@
+*.pyc
+.installed.cfg
+.mr.developer.cfg
+bin/
+develop-eggs/
+parts/
+*~
+.ropeproject/
+eggs
+*.egg-info/
