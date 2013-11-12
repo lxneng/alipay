@@ -7,7 +7,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 setup(name='alipay',
-      version='0.1',
+      version='0.2',
       description='An Unofficial Alipay API for Python',
       long_description=README + '\n\n' + CHANGES,
       author='Eric Lo',
@@ -18,4 +18,5 @@ setup(name='alipay',
       package_dir={'': 'src'},
       include_package_data=True,
       zip_safe=False,
-      install_requires=[])
+      install_requires=[],
+      test_suite='alipay.tests')
