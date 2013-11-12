@@ -20,7 +20,7 @@ class Alipay(object):
 
     def _generate_sign(self, params):
         src = '&'.join(['%s=%s' % (key, value) for key,
-                        value in sorted(params.iteritems())]) + self.key
+                        value in sorted(params.items())]) + self.key
         return md5(src).hexdigest()
 
     def _check_params(self, params, names):
