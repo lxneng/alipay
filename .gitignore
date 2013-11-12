@@ -8,3 +8,5 @@ parts/
 .ropeproject/
 eggs
 *.egg-info/
+.tox/
+*.egg/

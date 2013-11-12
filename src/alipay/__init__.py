@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-import urllib
 import requests
 from hashlib import md5
 from .exceptions import MissingParameter
 from .exceptions import ParameterValueError
+
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
 
 
 class Alipay(object):
@@ -35,7 +39,7 @@ class Alipay(object):
         params.update({'sign_type': 'MD5',
                        'sign': self._generate_sign(params)})
 
-        return '%s?%s' % (self.GATEWAY_URL, urllib.urlencode(params))
+        return '%s?%s' % (self.GATEWAY_URL, urlencode(params))
 
     def create_direct_pay_by_user_url(self, **kw):
         '''即时到帐'''
