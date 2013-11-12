@@ -4,7 +4,7 @@
 .. image:: https://travis-ci.org/lxneng/alipay.png?branch=master
    :target: https://travis-ci.org/lxneng/alipay
 
-.. image:: https://pypip.in/d/alipay.png
+.. image:: https://pypip.in/d/alipay/badge.png
         :target: https://crate.io/packages/alipay/
 
 介绍
