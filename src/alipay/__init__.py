@@ -77,3 +77,11 @@ class Alipay(object):
             return requests.get("https://mapi.alipay.com/gateway.do?service=notify_verify&partner=%s&notify_id=%s" % (self.pid, kw['notify_id'])).text == 'true'
         else:
             return False
+
+
+def includeme(config):
+    settings = config.registry.settings
+    config.registry['alipay'] = Alipay(
+        pid=settings.get('alipay.pid'),
+        key=settings.get('alipay.key'),
+        seller_email=settings.get('alipay.seller_email'))
