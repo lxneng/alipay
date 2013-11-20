@@ -109,9 +109,12 @@ Include alipay either by setting your includes in your .ini, or by calling confi
 now in your View
 
 ::
+
 	def some_view(request):
 		alipay = request.registry['alipay']
-		...
+		url = alipay.create_direct_pay_by_user_url(...)
+
+
 
 Reference
 ---------------------------------------
