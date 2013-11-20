@@ -1,4 +1,4 @@
-支付宝非官方Python API
+An Unofficial Alipay API for Python
 =======================================
 
 .. image:: https://travis-ci.org/lxneng/alipay.png?branch=master
@@ -7,22 +7,32 @@
 .. image:: https://pypip.in/d/alipay/badge.png
         :target: https://crate.io/packages/alipay/
 
-介绍
+Overview
 ---------------------------------------
 
-支付宝非官方Python API
+An Unofficial Alipay API for Python, It Contain these API:
 
-安装
+- Generate direct payment url
+
+- Generate partner trade payment url
+
+- Generate Standard mixed payment url
+
+- Verify notify
+
+official document: https://b.alipay.com/order/techService.htm
+
+Install
 ---------------------------------------
 
 ::
     
     pip install alipay
 
-用法
+Usage
 ---------------------------------------
 
-初始化
+Initialization
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
@@ -30,8 +40,10 @@
     >>> from alipay import Alipay
     >>> alipay = Alipay(pid='your_alipay_pid', key='your_alipay_key', seller_email='your_seller_mail')
 
-生成即时到账支付链接
-~~~~~~~~~~~~~~~~~~
+Generate direct payment url (生成即时到账支付链接)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Introduction: https://b.alipay.com/order/productDetail.htm?productId=2012111200373124
 
 ::
 
@@ -39,8 +51,10 @@
 	_return_url', notify_url='your_order_notify_url')
 	'https://mapi.alipay.com/gateway.do?seller_email=.....'
 
-生成担保交易支付链接
-~~~~~~~~~~~~~~~~~~
+Generate partner trade payment url (生成担保交易支付链接)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Introduction: https://b.alipay.com/order/productDetail.htm?productId=2012111200373121
 
 ::
 
@@ -55,39 +69,55 @@
 	... 'return_url': 'your_order_return_url',
 	... 'notify_url': 'your_order_notify_url'
 	... }
-	>>> alipay.create_direct_pay_by_user_url(**params)
+	>>> alipay.create_partner_trade_by_buyer_url(**params)
 	'https://mapi.alipay.com/gateway.do?seller_email=.....'
 
-生成标准双接口支付链接
-~~~~~~~~~~~~~~~~~~~~
+Generate Standard mixed payment url (生成标准双接口支付链接)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Introduction: https://b.alipay.com/order/productDetail.htm?productId=2012111300373136
 
 ::
 
 	>>> alipay.trade_create_by_buyer_url(**params)
 	'https://mapi.alipay.com/gateway.do?seller_email=.....'
 
+Verify notify
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-集成到Pyramid项目中
-~~~~~~~~~~~~~~~~~~~~
+verify notify from alipay server, example in Pyramid Application
 
-配置
+::
+    
+    def alipy_notify(request):
+    	alipay = request.registry['alipay']
+    	if alipay.verify_notify(request.params):
+    		# this is a valid notify, code business logic here
+    	else:
+    	    # this is a invalid notify
+
+
+Example in Pyramid Application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Include alipay either by setting your includes in your .ini, or by calling config.include('alipay').
 
 ::
 
 	pyramid.includes = alipay
 
-在View中取出alipay对象
+now in your View
 
 ::
+	def some_view(request):
+		alipay = request.registry['alipay']
+		...
 
-	alipay = self.request.registry['alipay']
-
-
-参考资料
+Reference
 ---------------------------------------
 
-- `ruby alipay gem <https://github.com/chloerei/alipay>`_
+- `Ruby Alipay GEM <https://github.com/chloerei/alipay>`_
 
 - `支付宝 API 向导（Ruby 版） <http://blog.chloerei.com/articles/51-alipay-payment-in-ruby>`_
 
-- `官方文档 <https://b.alipay.com/order/techService.htm>`_
+- `Official <https://b.alipay.com/order/techService.htm>`_
