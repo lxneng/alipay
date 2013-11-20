@@ -123,4 +123,4 @@ Reference
 
 - `支付宝 API 向导（Ruby 版） <http://blog.chloerei.com/articles/51-alipay-payment-in-ruby>`_
 
-- `Official <https://b.alipay.com/order/techService.htm>`_
+- `Official document <https://b.alipay.com/order/techService.htm>`_
