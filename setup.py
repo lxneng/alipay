@@ -18,5 +18,5 @@ setup(name='alipay',
       package_dir={'': 'src'},
       include_package_data=True,
       zip_safe=False,
-      install_requires=['requests'],
+      install_requires=['requests', 'six'],
       test_suite='alipay.tests')

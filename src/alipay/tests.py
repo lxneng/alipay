@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+# encoding: utf-8
 import unittest
 
 
@@ -13,6 +15,14 @@ class AlipayTests(unittest.TestCase):
     def test_create_direct_pay_by_user_url(self):
         params = {'out_trade_no': '1',
                   'subject': 'test',
+                  'price': '0.01',
+                  'quantity': 1}
+        self.assertIn('create_direct_pay_by_user',
+                      self.alipay.create_direct_pay_by_user_url(**params))
+
+    def test_create_direct_pay_by_user_url_with_unicode(self):
+        params = {'out_trade_no': '1',
+                  'subject': u'测试',
                   'price': '0.01',
                   'quantity': 1}
         self.assertIn('create_direct_pay_by_user',
