@@ -8,5 +8,8 @@ class MissingParameter(AlipayException):
 
 
 class ParameterValueError(AlipayException):
-	"""Raised when parameter value is incorrect
-	"""
+    """Raised when parameter value is incorrect"""
+    
+class TokenAuthorizationError(AlipayException):
+    '''The error occurred when getting token 
+    '''
