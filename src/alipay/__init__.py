@@ -19,7 +19,10 @@ except ImportError:
     from urllib.parse import urlencode
 
 def encode_dict(params):
-    return {k:six.u(v).encode('utf-8') if isinstance(v, str) else v.encode('utf-8') if isinstance(v, six.string_types) else v for k, v in six.iteritems(params)}
+    return {k:six.u(v).encode('utf-8')
+            if isinstance(v, str) else v.encode('utf-8') 
+            if isinstance(v, six.string_types) else v 
+            for k, v in six.iteritems(params)}
 
 class Alipay(object):
 
