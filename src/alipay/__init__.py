@@ -93,7 +93,7 @@ class Alipay(object):
         url = self._build_url('trade_create_by_buyer', **kw)
         return url
     
-    def getSignMethod(self, **kw):
+    def get_sign_method(self, **kw):
         signkey, signvalue, signdescription = self.sign_tuple
         signmethod = getattr(self, '_generate_%s_sign' % signdescription.lower())
         if signmethod == None:
@@ -106,7 +106,7 @@ class Alipay(object):
             kw.pop('sign_type')
         except KeyError:
             pass
-        signmethod = self.getSignMethod(**kw)
+        signmethod = self.get_sign_method(**kw)
         if signmethod(kw) == sign:
             return self.checkNotifyRemotely(**kw)
         else:
@@ -189,14 +189,14 @@ class WapAlipay(Alipay):
                         value in newpara.items()]) + self.key
         return md5(src.encode('utf-8')).hexdigest()
     
-    def getSignMethod(self, **kw):
+    def get_sign_method(self, **kw):
         if 'notify_data' in kw:
             signkey, signvalue, signdescription = self.sign_tuple
             signmethod = getattr(self, '_generate_%s_notify_sign' %(signdescription.lower()))
             if signmethod == None:
                 raise NotImplementedError("This type '%s' of sign is not implemented yet." %(signdescription))
             return signmethod
-        return super(WapAlipay, self).getSignMethod(**kw)
+        return super(WapAlipay, self).get_sign_method(**kw)
 
 def includeme(config):
     settings = config.registry.settings
