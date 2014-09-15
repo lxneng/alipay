@@ -5,7 +5,6 @@ from .exceptions import MissingParameter
 from .exceptions import ParameterValueError
 import six
 import time
-import urllib
 from collections import OrderedDict
 if six.PY3:
     from urllib.parse import parse_qs, urlparse, unquote
@@ -27,6 +26,7 @@ class Alipay(object):
     GATEWAY_URL = 'https://mapi.alipay.com/gateway.do'
     
     NOTIFY_GATEWAY_URL = 'https://mapi.alipay.com/gateway.do?service=notify_verify&partner=%s&notify_id=%s'
+    sign_tuple = ('sign_type', 'MD5', 'MD5')
 
     def __init__(self, pid, key, seller_email):
         self.key = key
@@ -46,14 +46,6 @@ class Alipay(object):
             raise MissingParameter('missing parameters')
         return
 
-    '''
-    key of signtype parameter,
-    value of signtype parameter,
-    description of sign type
-    '''
-    def getSignTuple(self):
-        return ('sign_type', 'MD5', 'MD5')
-    
     def signKey(self):
         return False
 
@@ -61,10 +53,10 @@ class Alipay(object):
         params = self.default_params.copy()
         params['service'] = service
         params.update(kw)
-        signkey, signvalue, signdescription = self.getSignTuple()
-        signmethod = getattr(self, '_generate_%s_sign' %(signdescription.lower()))
+        signkey, signvalue, signdescription = self.sign_tuple
+        signmethod = getattr(self, '_generate_%s_sign' % signdescription.lower())
         if signmethod == None:
-            raise NotImplementedError("This type '%s' of sign is not implemented yet." %(signdescription))
+            raise NotImplementedError("This type '%s' of sign is not implemented yet." % signdescription)
         if self.signKey():
             params.update({signkey: signvalue})
         params.update({signkey: signvalue,
@@ -102,10 +94,10 @@ class Alipay(object):
         return url
     
     def getSignMethod(self, **kw):
-        signkey, signvalue, signdescription = self.getSignTuple()
-        signmethod = getattr(self, '_generate_%s_sign' %(signdescription.lower()))
+        signkey, signvalue, signdescription = self.sign_tuple
+        signmethod = getattr(self, '_generate_%s_sign' % signdescription.lower())
         if signmethod == None:
-            raise NotImplementedError("This type '%s' of sign is not implemented yet." %(signdescription))
+            raise NotImplementedError("This type '%s' of sign is not implemented yet." % signdescription)
         return signmethod
 
     def verify_notify(self, **kw):
@@ -129,6 +121,7 @@ class WapAlipay(Alipay):
     TOKEN_ROOT_NODE = 'direct_trade_create_req'
     AUTH_ROOT_NODE = 'auth_and_execute_req'
     _xmlnode = '<%s>%s</%s>'
+    sign_tuple = ('sec_id', 'MD5', 'MD5')
 
     def __init__(self, pid, key, seller_email):
         super(WapAlipay, self).__init__(pid, key, seller_email)
@@ -169,9 +162,6 @@ class WapAlipay(Alipay):
         url = self._build_url('alipay.wap.auth.authAndExecute', **params)
         return url
     
-    def getSignTuple(self):
-        return ('sec_id', 'MD5', 'MD5')
-        
     def trade_create_by_buyer_url(self, **kw):
         raise NotImplementedError("This type of pay is not supported in wap.")
     
@@ -201,7 +191,7 @@ class WapAlipay(Alipay):
     
     def getSignMethod(self, **kw):
         if 'notify_data' in kw:
-            signkey, signvalue, signdescription = self.getSignTuple()
+            signkey, signvalue, signdescription = self.sign_tuple
             signmethod = getattr(self, '_generate_%s_notify_sign' %(signdescription.lower()))
             if signmethod == None:
                 raise NotImplementedError("This type '%s' of sign is not implemented yet." %(signdescription))
