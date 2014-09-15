@@ -106,11 +106,11 @@ class Alipay(object):
             pass
         signmethod = self.get_sign_method(**kw)
         if signmethod(kw) == sign:
-            return self.checkNotifyRemotely(**kw)
+            return self.check_notify_remotely(**kw)
         else:
             return False
         
-    def checkNotifyRemotely(self, **kw):
+    def check_notify_remotely(self, **kw):
         return requests.get(self.NOTIFY_GATEWAY_URL % (self.pid, kw['notify_id']), headers={'connection': 'close'}).text == 'true'
         
 '''Wap支付接口'''
@@ -167,12 +167,12 @@ class WapAlipay(Alipay):
     def create_partner_trade_by_buyer_url(self, **kw):
         raise NotImplementedError("This type of pay is not supported in wap.")
     
-    def checkNotifyRemotely(self, **kw):
+    def check_notify_remotely(self, **kw):
         if 'notify_data' in kw:
             notifydata = unquote(kw['notify_data'])
             notifydata = six.u(notifydata).encode('utf-8') if isinstance(notifydata, str) else notifydata.encode('utf-8') if isinstance(notifydata, six.string_types) else notifydata
             tree = ElementTree.ElementTree(ElementTree.fromstring(notifydata))
-            return super(WapAlipay, self).checkNotifyRemotely(**{'notify_id': tree.find("notify_id").text})
+            return super(WapAlipay, self).check_notify_remotely(**{'notify_id': tree.find("notify_id").text})
         return True
     
     def _generate_md5_notify_sign(self, kw):
