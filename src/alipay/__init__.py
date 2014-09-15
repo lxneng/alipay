@@ -27,6 +27,7 @@ class Alipay(object):
     
     NOTIFY_GATEWAY_URL = 'https://mapi.alipay.com/gateway.do?service=notify_verify&partner=%s&notify_id=%s'
     sign_tuple = ('sign_type', 'MD5', 'MD5')
+    sign_key = False
 
     def __init__(self, pid, key, seller_email):
         self.key = key
@@ -46,9 +47,6 @@ class Alipay(object):
             raise MissingParameter('missing parameters')
         return
 
-    def signKey(self):
-        return False
-
     def _build_url(self, service, **kw):
         params = self.default_params.copy()
         params['service'] = service
@@ -57,7 +55,7 @@ class Alipay(object):
         signmethod = getattr(self, '_generate_%s_sign' % signdescription.lower())
         if signmethod == None:
             raise NotImplementedError("This type '%s' of sign is not implemented yet." % signdescription)
-        if self.signKey():
+        if self.sign_key:
             params.update({signkey: signvalue})
         params.update({signkey: signvalue,
                        'sign': signmethod(params)})
@@ -122,6 +120,7 @@ class WapAlipay(Alipay):
     AUTH_ROOT_NODE = 'auth_and_execute_req'
     _xmlnode = '<%s>%s</%s>'
     sign_tuple = ('sec_id', 'MD5', 'MD5')
+    sign_key = True
 
     def __init__(self, pid, key, seller_email):
         super(WapAlipay, self).__init__(pid, key, seller_email)
@@ -167,9 +166,6 @@ class WapAlipay(Alipay):
     
     def create_partner_trade_by_buyer_url(self, **kw):
         raise NotImplementedError("This type of pay is not supported in wap.")
-    
-    def signKey(self):
-        return True
     
     def checkNotifyRemotely(self, **kw):
         if 'notify_data' in kw:
