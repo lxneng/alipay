@@ -34,13 +34,19 @@ class Alipay(object):
     sign_tuple = ('sign_type', 'MD5', 'MD5')
     sign_key = False
 
-    def __init__(self, pid, key, seller_email):
+    def __init__(self, pid, key, seller_email=None, seller_id=None):
         self.key = key
         self.pid = pid
         self.default_params = {'_input_charset': 'utf-8',
                                'partner': pid,
-                               'seller_email': seller_email,
                                'payment_type': '1'}
+        # 优先使用 seller_id （与接口端的行为一致）
+        if seller_id is not None:
+            self.default_params['seller_id'] = seller_id
+        elif seller_email is not None:
+            self.default_params['seller_email'] = seller_email
+        else:
+            raise ParameterValueError("seller_email and seller_id must have one.")
 
     def _generate_md5_sign(self, params):
         src = '&'.join(['%s=%s' % (key, value) for key,
@@ -75,7 +81,7 @@ class Alipay(object):
 
         if not kw.get('total_fee') and \
            not (kw.get('price') and kw.get('quantity')):
-            raise ParameterValueError('total_fee or (price && quantiry) must have one')
+            raise ParameterValueError('total_fee or (price && quantiry) must have one.')
 
         url = self._build_url('create_direct_pay_by_user', **kw)
         return url
