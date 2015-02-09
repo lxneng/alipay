@@ -83,7 +83,7 @@ class AlipayTests(unittest.TestCase):
     def test_raise_parameter_value_error_when_initializing(self):
         from .exceptions import ParameterValueError
         self.assertRaises(ParameterValueError,
-                          self.Alipay(pid='pid', key='key'))
+                          self.Alipay, pid='pid', key='key')
 
     def test_create_wap_direct_pay_by_user_url(self):
         params = {'out_trade_no': '1',
