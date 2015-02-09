@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 import requests
-from hashlib import md5
-from .exceptions import MissingParameter
-from .exceptions import ParameterValueError
 import six
 import time
+from hashlib import md5
+from xml.etree import ElementTree
 from collections import OrderedDict
+from .exceptions import MissingParameter
+from .exceptions import ParameterValueError
+from .exceptions import TokenAuthorizationError
 if six.PY3:
     from urllib.parse import parse_qs, urlparse, unquote
 else:
     from urlparse import parse_qs, urlparse, unquote
-from xml.etree import ElementTree
-from alipay.exceptions import TokenAuthorizationError
 
 try:
     from urllib import urlencode
@@ -66,7 +66,7 @@ class Alipay(object):
         signmethod = getattr(self, '_generate_%s_sign' %
                              signdescription.lower())
         if signmethod is None:
-            raise NotImplementedError("This type '%s' of sign is not implemented yet." % 
+            raise NotImplementedError("This type '%s' of sign is not implemented yet." %
                                       signdescription)
         if self.sign_key:
             params.update({signkey: signvalue})
@@ -108,7 +108,7 @@ class Alipay(object):
         signmethod = getattr(self, '_generate_%s_sign' %
                              signdescription.lower())
         if signmethod is None:
-            raise NotImplementedError("This type '%s' of sign is not implemented yet." % 
+            raise NotImplementedError("This type '%s' of sign is not implemented yet." %
                                       signdescription)
         return signmethod
 
@@ -125,7 +125,7 @@ class Alipay(object):
             return False
 
     def check_notify_remotely(self, **kw):
-        remote_result = requests.get(self.NOTIFY_GATEWAY_URL % (self.pid, kw['notify_id']), 
+        remote_result = requests.get(self.NOTIFY_GATEWAY_URL % (self.pid, kw['notify_id']),
                                      headers={'connection': 'close'}).text
         return remote_result is 'true'
 
@@ -180,7 +180,9 @@ class WapAlipay(Alipay):
         else:
             token = kw['token']
         params = {'req_data': self._xmlnode %
-                  (self.AUTH_ROOT_NODE, (self._xmlnode % ('request_token', token, 'request_token')), self.AUTH_ROOT_NODE)}
+                  (self.AUTH_ROOT_NODE,
+                   (self._xmlnode % ('request_token', token, 'request_token')),
+                   self.AUTH_ROOT_NODE)}
         url = self._build_url('alipay.wap.auth.authAndExecute', **params)
         return url
 
@@ -193,7 +195,10 @@ class WapAlipay(Alipay):
     def check_notify_remotely(self, **kw):
         if 'notify_data' in kw:
             notifydata = unquote(kw['notify_data'])
-            notifydata = six.u(notifydata).encode('utf-8') if isinstance(notifydata, str) else notifydata.encode('utf-8') if isinstance(notifydata, six.string_types) else notifydata
+            if isinstance(notifydata, str):
+                notifydata = six.u(notifydata).encode('utf-8')
+            elif isinstance(notifydata, six.string_types):
+                notifydata = notifydata.encode('utf-8')
             tree = ElementTree.ElementTree(ElementTree.fromstring(notifydata))
             return super(WapAlipay, self).check_notify_remotely(**{'notify_id': tree.find("notify_id").text})
         return True
@@ -213,7 +218,7 @@ class WapAlipay(Alipay):
             signmethod = getattr(self, '_generate_%s_notify_sign' %
                                  signdescription.lower())
             if signmethod is None:
-                raise NotImplementedError("This type '%s' of sign is not implemented yet." % 
+                raise NotImplementedError("This type '%s' of sign is not implemented yet." %
                                           signdescription)
             return signmethod
         return super(WapAlipay, self).get_sign_method(**kw)
