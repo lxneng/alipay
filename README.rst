@@ -40,6 +40,12 @@ Initialization
     >>> from alipay import Alipay
     >>> alipay = Alipay(pid='your_alipay_pid', key='your_alipay_key', seller_email='your_seller_mail')
 
+Or you can use `seller_id` instead of `seller_email`:
+
+::
+
+    >>> alipay = Alipay(pid='your_alipay_pid', key='your_alipay_key', seller_id='your_seller_id')
+
 Generate direct payment url (生成即时到账支付链接)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
