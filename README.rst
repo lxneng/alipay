@@ -106,7 +106,7 @@ verify notify from alipay server, example in Pyramid Application
 
     def alipy_notify(request):
     	alipay = request.registry['alipay']
-    	if alipay.verify_notify(request.params):
+    	if alipay.verify_notify(**request.params):
     		# this is a valid notify, code business logic here
     	else:
     	    # this is a invalid notify
