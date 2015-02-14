@@ -127,7 +127,7 @@ class Alipay(object):
     def check_notify_remotely(self, **kw):
         remote_result = requests.get(self.NOTIFY_GATEWAY_URL % (self.pid, kw['notify_id']),
                                      headers={'connection': 'close'}).text
-        return remote_result is 'true'
+        return remote_result == 'true'
 
 '''Wap支付接口'''
 
