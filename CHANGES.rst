@@ -1,6 +1,14 @@
 Changelog
 ==============================
 
+0.4.2  - Feb.14, 2015
+--------------------------------
+
+- Fix argument type error of verify_notify in README
+
+- FIX SEVERE FAULT IN `check_notify_remotely`
+  
+
 0.4.1  - Feb.09, 2015
 --------------------------------
 
