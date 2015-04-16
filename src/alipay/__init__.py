@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+
 import requests
 import six
 import time
+from pytz import timezone
 from hashlib import md5
+from datetime import datetime
 from xml.etree import ElementTree
 from collections import OrderedDict
 from .exceptions import MissingParameter
@@ -102,6 +105,22 @@ class Alipay(object):
 
         url = self._build_url('trade_create_by_buyer', **kw)
         return url
+
+    def add_alipay_qrcode_url(self, **kw):
+        '''二维码管理 - 添加'''
+        self._check_params(kw, ['biz_data', 'biz_type'])
+
+        utcnow = datetime.utcnow()
+        shanghainow = timezone('Asia/Shanghai').fromutc(utcnow)
+
+        kw['method'] = 'add'
+        kw['timestamp'] = shanghainow.strftime('%Y-%m-%d %H:%M:%S')
+
+        url = self._build_url('alipay.mobile.qrcode.manage', **kw)
+        return url
+
+    def add_alipay_qrcode(self, **kw):
+        return requests.get(self.add_alipay_qrcode_url(**kw))
 
     def get_sign_method(self, **kw):
         signkey, signvalue, signdescription = self.sign_tuple
