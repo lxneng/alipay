@@ -62,6 +62,23 @@ class AlipayTests(unittest.TestCase):
         self.assertIn('trade_create_by_buyer',
                       self.alipay.trade_create_by_buyer_url(**params))
 
+    def test_add_alipay_qrcode(self):
+        import json
+        params = {
+            'biz_data': json.dumps({
+                'goods_info': {
+                    'id': '123456',
+                    'name': u'测试',
+                    'price': '0.01'
+                },
+                'need_address': 'F',
+                'trade_type': '1'
+            }, ensure_ascii=False),
+            'biz_type': '10'
+        }
+        self.assertIn('alipay.mobile.qrcode.manage',
+                      self.alipay.add_alipay_qrcode_url(**params))
+
     def test_raise_missing_parameter_in_create_direct_pay_by_user_url(self):
         from .exceptions import MissingParameter
         params = {'out_trade_no': '1',

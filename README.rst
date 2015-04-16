@@ -97,6 +97,23 @@ Introduction: https://b.alipay.com/order/productDetail.htm?productId=20121113003
 	>>> alipay.trade_create_by_buyer_url(**params)
 	'https://mapi.alipay.com/gateway.do?seller_email=.....'
 
+Generate Creating QR code url
+~~~~~~~~~~~~~~~~~~~
+
+..
+
+    生成创建 QR 码链接
+
+Introduction: https://b.alipay.com/order/productDetail.htm?productId=2012120700377303
+
+.. code-block:: python
+
+    >>> alipay.add_alipay_qrcode_url(**params)
+    'https://mapi.alipay.com/gateway.do?seller_id=.......'
+
+Note: 如果你的 `biz_data` 中有 Unicode 字符，在 dumps 的时候需要把 `ensure_ascii` 设置为 `False`，即 :code:`json.dumps(d, ensure_ascii=False)` 否则会遇到错误
+
+
 Verify notify
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
