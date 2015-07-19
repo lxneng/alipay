@@ -49,7 +49,8 @@ class Alipay(object):
         elif seller_email is not None:
             self.default_params['seller_email'] = seller_email
         else:
-            raise ParameterValueError("seller_email and seller_id must have one.")
+            raise ParameterValueError(
+                "seller_email and seller_id must have one.")
 
     def _generate_md5_sign(self, params):
         src = '&'.join(['%s=%s' % (key, value) for key,
@@ -84,7 +85,8 @@ class Alipay(object):
 
         if not kw.get('total_fee') and \
            not (kw.get('price') and kw.get('quantity')):
-            raise ParameterValueError('total_fee or (price && quantiry) must have one.')
+            raise ParameterValueError(
+                'total_fee or (price && quantiry) must have one.')
 
         url = self._build_url('create_direct_pay_by_user', **kw)
         return url
@@ -118,6 +120,12 @@ class Alipay(object):
 
         url = self._build_url('alipay.mobile.qrcode.manage', **kw)
         return url
+
+    def send_goods_confirm_by_platform(self, **kw):
+        ''''确认发货'''
+        names = ['trade_no', 'logistics_name']
+        self._check_params(kw, names)
+        url = self._build_url('send_goods_confirm_by_platform', **kw)
 
     def add_alipay_qrcode(self, **kw):
         return requests.get(self.add_alipay_qrcode_url(**kw))
@@ -174,7 +182,7 @@ class WapAlipay(Alipay):
                  'call_back_url', ]
         self._check_params(kw, names)
         req_data = ''.join([self._xmlnode % (key, value, key)
-                           for (key, value) in six.iteritems(kw)])
+                            for (key, value) in six.iteritems(kw)])
         req_data = self._xmlnode % (
             self.TOKEN_ROOT_NODE, req_data, self.TOKEN_ROOT_NODE)
         if '&' in req_data:
@@ -228,7 +236,8 @@ class WapAlipay(Alipay):
         newpara['v'] = kw['v']
         newpara['sec_id'] = kw['sec_id']
         newpara['notify_data'] = kw['notify_data']
-        src = '&'.join(['%s=%s' % (key, value) for key, value in newpara.items()]) + self.key
+        src = '&'.join(['%s=%s' % (key, value)
+                        for key, value in newpara.items()]) + self.key
         return md5(src.encode('utf-8')).hexdigest()
 
     def get_sign_method(self, **kw):
