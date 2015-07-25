@@ -70,7 +70,7 @@ class AlipayTests(unittest.TestCase):
             'transport_type': 'EXPRESS',
             'invoice_no': 'AAAAA'
             }
-        self.assertIn('send_goods_confirm_by_platform',
+        self.assertIn('trade_no',
                       self.alipay.send_goods_confirm_by_platform(**params))
 
     def test_add_alipay_qrcode(self):
