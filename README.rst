@@ -83,6 +83,28 @@ Introduction: https://b.alipay.com/order/productDetail.htm?productId=20121112003
 	>>> alipay.create_partner_trade_by_buyer_url(**params)
 	'https://mapi.alipay.com/gateway.do?seller_email=.....'
 
+Generate send goods confirm url
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+..
+
+    生成确认发货链接
+
+Introduction: You get get the detail content from other product inferface document
+
+.. code-block:: python
+
+	>>> params = {
+	... 'trade_no': 'your_alipay_trade_id',
+	... 'logistics_name': 'your_logicstic_name',
+	... 'transport_type': 'EXPRESS',
+	... 'invocie_no': 'your_invocie_no'
+	... }
+	>>> alipay.send_goods_confirm_by_platform(**params)
+	'https://mapi.alipay.com/gateway.do?sign=.....&trade_no=...'
+
+
+
 Generate Standard mixed payment url
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
