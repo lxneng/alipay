@@ -90,7 +90,7 @@ Generate send goods confirm url
 
     生成确认发货链接
 
-Introduction: You get get the detail content from other product inferface document
+Introduction: https://cshall.alipay.com/support/help_detail.htm?help_id=491097
 
 .. code-block:: python
 
