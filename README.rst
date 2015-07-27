@@ -1,11 +1,14 @@
 An Unofficial Alipay API for Python
 =======================================
 
-.. image:: https://travis-ci.org/lxneng/alipay.png?branch=master
+.. image:: https://img.shields.io/travis/lxneng/alipay.svg
     :target: https://travis-ci.org/lxneng/alipay
 
-.. image:: https://pypip.in/d/alipay/badge.png
-    :target: https://crate.io/packages/alipay/
+.. image:: https://img.shields.io/pypi/v/alipay.svg
+    :target: https://pypi.python.org/alipay/
+
+.. image:: https://img.shields.io/pypi/dm/alipay.svg
+    :target: https://pypi.python.org/alipay/
 
 Overview
 ---------------------------------------
