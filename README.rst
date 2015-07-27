@@ -5,10 +5,10 @@ An Unofficial Alipay API for Python
     :target: https://travis-ci.org/lxneng/alipay
 
 .. image:: https://img.shields.io/pypi/v/alipay.svg
-    :target: https://pypi.python.org/alipay/
+    :target: https://pypi.python.org/pypi/alipay/
 
 .. image:: https://img.shields.io/pypi/dm/alipay.svg
-    :target: https://pypi.python.org/alipay/
+    :target: https://pypi.python.org/pypi/alipay/
 
 Overview
 ---------------------------------------
