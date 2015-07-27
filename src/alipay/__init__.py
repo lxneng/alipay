@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import requests
 import six
 import time
@@ -126,6 +125,7 @@ class Alipay(object):
         names = ['trade_no', 'logistics_name']
         self._check_params(kw, names)
         url = self._build_url('send_goods_confirm_by_platform', **kw)
+        return url
 
     def add_alipay_qrcode(self, **kw):
         return requests.get(self.add_alipay_qrcode_url(**kw))

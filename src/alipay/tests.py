@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# encoding: utf-8
 import unittest
 import six
 from xml.etree import ElementTree
@@ -70,7 +69,7 @@ class AlipayTests(unittest.TestCase):
             'transport_type': 'EXPRESS',
             'invoice_no': 'AAAAA'
             }
-        self.assertIn('trade_no',
+        self.assertIn('send_goods_confirm_by_platform',
                       self.alipay.send_goods_confirm_by_platform(**params))
 
     def test_add_alipay_qrcode(self):
