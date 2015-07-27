@@ -10,6 +10,7 @@ else:
 
 
 class AlipayTests(unittest.TestCase):
+
     def Alipay(self, *a, **kw):
         from alipay import Alipay
         return Alipay(*a, **kw)
@@ -62,6 +63,16 @@ class AlipayTests(unittest.TestCase):
         self.assertIn('trade_create_by_buyer',
                       self.alipay.trade_create_by_buyer_url(**params))
 
+    def test_send_goods_confirm_by_platform(self):
+        params = {
+            'trade_no': 1,
+            'logistics_name': 'XXXX',
+            'transport_type': 'EXPRESS',
+            'invoice_no': 'AAAAA'
+            }
+        self.assertIn('trade_no',
+                      self.alipay.send_goods_confirm_by_platform(**params))
+
     def test_add_alipay_qrcode(self):
         import json
         params = {
@@ -113,7 +124,8 @@ class AlipayTests(unittest.TestCase):
         params = parse_qs(urlparse(url).query, keep_blank_values=True)
         self.assertIn('req_data', params)
         self.assertIn('sec_id', params)
-        tree = ElementTree.ElementTree(ElementTree.fromstring(params['req_data'][0]))
+        tree = ElementTree.ElementTree(
+            ElementTree.fromstring(params['req_data'][0]))
         self.assertEqual(self.wapalipay.TOKEN_ROOT_NODE, tree.getroot().tag)
 
     def test_wap_notimplemented_pay(self):
