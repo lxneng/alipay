@@ -18,6 +18,7 @@ An Unofficial Alipay API for Python, It Contain these API:
 - Generate direct payment url
 - Generate partner trade payment url
 - Generate Standard mixed payment url
+- Generate batch trans money url
 - Verify notify
 
 official document: https://b.alipay.com/order/techService.htm
