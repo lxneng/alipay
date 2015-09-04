@@ -112,7 +112,8 @@ class Alipay(object):
         for itm in batch_list:
             total_fee += float(itm['fee'])
             total_num += 1
-            detail_data += '^'.join((batch_no + str(total_num), itm['account'], itm['name'], itm['fee'], itm['note'] + '|'))
+            detail_data += '^'.join((batch_no + str(total_num), itm['account'], itm['name'],
+                                     str(itm['fee']), itm['note'] + '|'))
         kw['detail_data'] = detail_data
         utcnow = datetime.utcnow()
         local_now = timezone(tzinfo).fromutc(utcnow)
