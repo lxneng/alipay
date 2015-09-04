@@ -98,6 +98,31 @@ class Alipay(object):
         url = self._build_url('create_partner_trade_by_buyer', **kw)
         return url
 
+    def create_batch_trans_notify_url(self, batch_list=(), tzinfo='Asia/Shanghai', **kw):
+        '''批量付款'''
+        names = ['account_name',
+                 'batch_no',
+                 'notify_url'
+                 ]
+        self._check_params(kw, names)
+        batch_no = kw['batch_no']
+        detail_data = ''
+        total_fee = 0.0
+        total_num = 0
+        for itm in batch_list:
+            total_fee += float(itm['fee'])
+            total_num += 1
+            detail_data += '^'.join((batch_no + str(total_num), itm['account'], itm['name'], itm['fee'], itm['note'] + '|'))
+        kw['detail_data'] = detail_data
+        utcnow = datetime.utcnow()
+        local_now = timezone(tzinfo).fromutc(utcnow)
+        kw['batch_num'] = total_num
+        kw['batch_fee'] = total_fee
+        kw['email'] = self.default_params['seller_email']
+        kw['pay_date'] = local_now.strftime('%Y%m%d')
+        url = self._build_url('batch_trans_notify', **kw)
+        return url
+
     def trade_create_by_buyer_url(self, **kw):
         '''标准双接口'''
         names = ['out_trade_no', 'subject', 'logistics_type',
