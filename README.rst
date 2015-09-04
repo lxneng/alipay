@@ -107,12 +107,15 @@ Introduction: https://b.alipay.com/order/productDetail.htm?productId=20121112003
 	'https://mapi.alipay.com/gateway.do?seller_email=xxx&detail_data=....'
 
 Note: batch_list 为批量付款用户列表，具体格式如下例子：(如涉及中文请使用unicode字符)
-.. code-block:: python
 
 	>>> batch_list = ({'account': 'test@xxx.com', #支付宝账号
-	... 			   'name': u'测试', #支付宝用户姓名
-	...			  	   'fee': '100', #转账金额
-	>>>				   'note': 'test'}) #转账原因
+	... 	           'name': u'测试', #支付宝用户姓名
+	...		   'fee': '100', #转账金额
+	...		   'note': 'test'},
+	...               {'account': 'test@xxx.com', #支付宝账号
+	... 	           'name': u'测试', #支付宝用户姓名
+	...		   'fee': '100', #转账金额
+	>>>		   'note': 'test'}) #转账原因
 
 Generate send goods confirm url
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
