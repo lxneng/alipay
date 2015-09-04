@@ -10,3 +10,4 @@ eggs
 *.egg-info/
 .tox/
 *.egg/
+.idea/
