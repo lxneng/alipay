@@ -53,18 +53,18 @@ class AlipayTests(unittest.TestCase):
 
     def test_create_batch_trans_notify_url(self):
         batch_list = ({'account': 'zjqq930112@sina.com',
-                                        'name': u'张建奇',
+                                        'name': u'姓名',
                                         'fee': '0.01',
                                         'note': 'test'},
                       {'account': 'zjqq930112@sina.com',
-                                        'name': u'张建奇',
+                                        'name': u'姓名',
                                         'fee': '0.01',
                                         'note': 'test'})
         params = {'batch_list': batch_list,
                   'account_name': 'test_name',
                   'batch_no': 'test_no',
                   'notify_url': 'www.test.com'}
-        self.assertIn('create_batch_trans_notify',
+        self.assertIn('batch_trans_notify',
                       self.alipay.create_batch_trans_notify_url(**params))
 
     def test_trade_create_by_buyer_url(self):
