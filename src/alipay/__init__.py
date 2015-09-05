@@ -107,6 +107,22 @@ class Alipay(object):
         url = self._build_url('trade_create_by_buyer', **kw)
         return url
 
+    def create_forex_trade(self, **kw):
+        '''Create website payment for foreigners (With QR code)'''
+        names = ['out_trade_no', 'subject']
+        self._check_params(kw, names)
+
+        url = self._build_url('create_forex_trade', **kw)
+        return url 
+
+    def create_forex_trade_wap(self, **kw):
+        '''Create mobile payment for foreigners'''
+        names = ['out_trade_no', 'subject']
+        self._check_params(kw, names)
+
+        url = self._build_url('create_forex_trade_wap', **kw)
+        return url
+
     def add_alipay_qrcode_url(self, **kw):
         '''二维码管理 - 添加'''
         self._check_params(kw, ['biz_data', 'biz_type'])
