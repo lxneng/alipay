@@ -18,6 +18,7 @@ An Unofficial Alipay API for Python, It Contain these API:
 - Generate direct payment url
 - Generate partner trade payment url
 - Generate Standard mixed payment url
+- Generate batch trans money url
 - Verify notify
 
 official document: https://b.alipay.com/order/techService.htm
@@ -85,6 +86,37 @@ Introduction: https://b.alipay.com/order/productDetail.htm?productId=20121112003
 	... }
 	>>> alipay.create_partner_trade_by_buyer_url(**params)
 	'https://mapi.alipay.com/gateway.do?seller_email=.....'
+
+Generate batch trans notify url
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+..
+
+    生成批量付款链接
+
+Introduction: https://b.alipay.com/order/productDetail.htm?productId=2012111200373121
+
+.. code-block:: python
+
+	>>> params = {
+	... 'batch_list': (), #批量付款用户列表
+	... 'account_name': 'seller_account_name', #卖家支付宝名称
+	... 'batch_no': 'batch_id', #转账流水号，须唯一
+	... 'notify_url': 'your_batch_notify_url' #异步通知地址
+	... }
+	>>> alipay.create_batch_trans_notify_ur(**params)
+	'https://mapi.alipay.com/gateway.do?seller_email=xxx&detail_data=....'
+
+Note: batch_list 为批量付款用户列表，具体格式如下例子：(如涉及中文请使用unicode字符)
+
+	>>> batch_list = ({'account': 'test@xxx.com', #支付宝账号
+	... 	           'name': u'测试', #支付宝用户姓名
+	...		   'fee': '100', #转账金额
+	...		   'note': 'test'},
+	...               {'account': 'test@xxx.com', #支付宝账号
+	... 	           'name': u'测试', #支付宝用户姓名
+	...		   'fee': '100', #转账金额
+	>>>		   'note': 'test'}) #转账原因
 
 Generate send goods confirm url
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
