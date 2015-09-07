@@ -78,6 +78,28 @@ class AlipayTests(unittest.TestCase):
         self.assertIn('trade_create_by_buyer',
                       self.alipay.trade_create_by_buyer_url(**params))
 
+    def test_create_forex_trade_url(self):
+        params = {'out_trade_no': '1',
+                  'subject': 'test',
+                  'logistics_type': 'POST',
+                  'logistics_fee': '0',
+                  'logistics_payment': 'SELLER_PAY',
+                  'price': '0.01',
+                  'quantity': 1}
+        self.assertIn('create_forex_trade',
+                      self.alipay.create_forex_trade_url(**params))
+
+    def test_create_forex_trade_wap_url(self):
+        params = {'out_trade_no': '1',
+                  'subject': 'test',
+                  'logistics_type': 'POST',
+                  'logistics_fee': '0',
+                  'logistics_payment': 'SELLER_PAY',
+                  'price': '0.01',
+                  'quantity': 1}
+        self.assertIn('create_forex_trade_wap',
+                      self.alipay.create_forex_trade_wap_url(**params))
+
     def test_send_goods_confirm_by_platform(self):
         params = {
             'trade_no': 1,
