@@ -126,14 +126,16 @@ Introduction: https://b.alipay.com/order/productDetail.htm?productId=20121112003
 
 Note: batch_list 为批量付款用户列表，具体格式如下例子：(如涉及中文请使用unicode字符)
 
+.. code-block:: python
+
 	>>> batch_list = ({'account': 'test@xxx.com', #支付宝账号
-	... 	           'name': u'测试', #支付宝用户姓名
-	...		           'fee': '100', #转账金额
-	...		           'note': 'test'},
+	...                'name': u'测试', #支付宝用户姓名
+	...                'fee': '100', #转账金额
+	...                'note': 'test'},
 	...               {'account': 'test@xxx.com', #支付宝账号
-	... 	           'name': u'测试', #支付宝用户姓名
-	...		           'fee': '100', #转账金额
-	>>>		           'note': 'test'}) #转账原因
+	...                'name': u'测试', #支付宝用户姓名
+	...                'fee': '100', #转账金额
+	...                'note': 'test'}) #转账原因
 
 Generate send goods confirm url
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -211,11 +213,11 @@ verify notify from alipay server, example in Pyramid Application
 .. code-block:: python
 
     def alipy_notify(request):
-    	alipay = request.registry['alipay']
-    	if alipay.verify_notify(**request.params):
-    		# this is a valid notify, code business logic here
-    	else:
-    	    # this is a invalid notify
+        alipay = request.registry['alipay']
+        if alipay.verify_notify(**request.params):
+            # this is a valid notify, code business logic here
+        else:
+            # this is a invalid notify
 
 
 Example in Pyramid Application
@@ -231,9 +233,9 @@ now in your View
 
 .. code-block:: python
 
-	def some_view(request):
-		alipay = request.registry['alipay']
-		url = alipay.create_direct_pay_by_user_url(...)
+    def some_view(request):
+        alipay = request.registry['alipay']
+        url = alipay.create_direct_pay_by_user_url(...)
 
 
 Reference

@@ -53,13 +53,13 @@ class AlipayTests(unittest.TestCase):
 
     def test_create_batch_trans_notify_url(self):
         batch_list = ({'account': 'zjqq930112@sina.com',
-                                        'name': u'姓名',
-                                        'fee': '0.01',
-                                        'note': 'test'},
+                       'name': u'姓名',
+                       'fee': '0.01',
+                       'note': 'test'},
                       {'account': 'zjqq930112@sina.com',
-                                        'name': u'姓名',
-                                        'fee': '0.01',
-                                        'note': 'test'})
+                       'name': u'姓名',
+                       'fee': '0.01',
+                       'note': 'test'})
         params = {'batch_list': batch_list,
                   'account_name': 'test_name',
                   'batch_no': 'test_no',
@@ -170,7 +170,8 @@ class AlipayTests(unittest.TestCase):
         self.assertRaises(NotImplementedError,
                           self.wapalipay.trade_create_by_buyer_url, **params)
         self.assertRaises(NotImplementedError,
-                          self.wapalipay.create_partner_trade_by_buyer_url, **params)
+                          self.wapalipay.create_partner_trade_by_buyer_url,
+                          **params)
 
     def test_wap_unauthorization_token(self):
         from .exceptions import TokenAuthorizationError
@@ -180,7 +181,8 @@ class AlipayTests(unittest.TestCase):
                   'seller_account_name': self.wapalipay.seller_email,
                   'call_back_url': 'http://mydomain.com/alipay/callback'}
         self.assertRaises(TokenAuthorizationError,
-                          self.wapalipay.create_direct_pay_by_user_url, **params)
+                          self.wapalipay.create_direct_pay_by_user_url,
+                          **params)
 
     def test_wap_notifyurl(self):
         '''valid MD5 sign

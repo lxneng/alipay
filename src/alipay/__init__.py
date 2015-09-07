@@ -32,7 +32,9 @@ class Alipay(object):
 
     GATEWAY_URL = 'https://mapi.alipay.com/gateway.do'
 
-    NOTIFY_GATEWAY_URL = 'https://mapi.alipay.com/gateway.do?service=notify_verify&partner=%s&notify_id=%s'
+    NOTIFY_GATEWAY_URL = 'https://mapi.alipay.com/gateway.do'\
+        '?service=notify_verify&partner=%s&notify_id=%s'
+
     sign_tuple = ('sign_type', 'MD5', 'MD5')
     sign_key = False
 
@@ -69,8 +71,9 @@ class Alipay(object):
         signmethod = getattr(self, '_generate_%s_sign' %
                              signdescription.lower())
         if signmethod is None:
-            raise NotImplementedError("This type '%s' of sign is not implemented yet." %
-                                      signdescription)
+            raise NotImplementedError(
+                "This type '%s' of sign is not implemented yet."
+                % signdescription)
         if self.sign_key:
             params.update({signkey: signvalue})
         params.update({signkey: signvalue,
@@ -98,7 +101,10 @@ class Alipay(object):
         url = self._build_url('create_partner_trade_by_buyer', **kw)
         return url
 
-    def create_batch_trans_notify_url(self, batch_list=(), tzinfo='Asia/Shanghai', **kw):
+    def create_batch_trans_notify_url(self,
+                                      batch_list=(),
+                                      tzinfo='Asia/Shanghai',
+                                      **kw):
         '''批量付款'''
         names = ['account_name',
                  'batch_no',
@@ -112,7 +118,8 @@ class Alipay(object):
         for itm in batch_list:
             total_fee += float(itm['fee'])
             total_num += 1
-            detail_data += '^'.join((batch_no + str(total_num), itm['account'], itm['name'],
+            detail_data += '^'.join((batch_no + str(total_num),
+                                     itm['account'], itm['name'],
                                      str(itm['fee']), itm['note'] + '|'))
         kw['detail_data'] = detail_data
         utcnow = datetime.utcnow()
@@ -177,8 +184,9 @@ class Alipay(object):
         signmethod = getattr(self, '_generate_%s_sign' %
                              signdescription.lower())
         if signmethod is None:
-            raise NotImplementedError("This type '%s' of sign is not implemented yet." %
-                                      signdescription)
+            raise NotImplementedError(
+                "This type '%s' of sign is not implemented yet."
+                % signdescription)
         return signmethod
 
     def verify_notify(self, **kw):
@@ -194,8 +202,9 @@ class Alipay(object):
             return False
 
     def check_notify_remotely(self, **kw):
-        remote_result = requests.get(self.NOTIFY_GATEWAY_URL % (self.pid, kw['notify_id']),
-                                     headers={'connection': 'close'}).text
+        remote_result = requests.get(self.NOTIFY_GATEWAY_URL % (
+            self.pid,
+            kw['notify_id']), headers={'connection': 'close'}).text
         return remote_result == 'true'
 
 '''Wap支付接口'''
@@ -269,7 +278,8 @@ class WapAlipay(Alipay):
             elif isinstance(notifydata, six.string_types):
                 notifydata = notifydata.encode('utf-8')
             tree = ElementTree.ElementTree(ElementTree.fromstring(notifydata))
-            return super(WapAlipay, self).check_notify_remotely(**{'notify_id': tree.find("notify_id").text})
+            return super(WapAlipay, self).check_notify_remotely(
+                **{'notify_id': tree.find("notify_id").text})
         return True
 
     def _generate_md5_notify_sign(self, kw):
@@ -288,8 +298,9 @@ class WapAlipay(Alipay):
             signmethod = getattr(self, '_generate_%s_notify_sign' %
                                  signdescription.lower())
             if signmethod is None:
-                raise NotImplementedError("This type '%s' of sign is not implemented yet." %
-                                          signdescription)
+                raise NotImplementedError(
+                    "This type '%s' of sign is not implemented yet."
+                    % signdescription)
             return signmethod
         return super(WapAlipay, self).get_sign_method(**kw)
 
