@@ -169,7 +169,7 @@ Introduction: http://global.alipay.com/ospay/home.htm
 
 .. code-block:: python
 
-	>>> params = {
+    >>> params = {
     ... 'out_trade_no': 'your_order_id',
     ... 'subject': 'your_order_subject',
     ... 'logistics_type': 'DIRECT',
@@ -181,8 +181,8 @@ Introduction: http://global.alipay.com/ospay/home.htm
     ... 'notify_url': 'your_order_notify_url'
     ... }
     >>> # Create website payment for foreigners
-	>>> alipay.create_forex_trade_url(**params)
-	'https://mapi.alipay.com/gateway.do?service=create_forex_trade......'
+    >>> alipay.create_forex_trade_url(**params)
+    'https://mapi.alipay.com/gateway.do?service=create_forex_trade......'
     >>> # Create mobile payment for foreigners
     >>> alipay.create_forex_trade_wap_url(**params)
     'https://mapi.alipay.com/gateway.do?service=create_forex_trade_wap......'
