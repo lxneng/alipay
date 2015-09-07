@@ -17,8 +17,11 @@ An Unofficial Alipay API for Python, It Contain these API:
 
 - Generate direct payment url
 - Generate partner trade payment url
-- Generate Standard mixed payment url
-- Generate batch trans money url
+- Generate standard mixed payment url
+- Generate batch trans pay url
+- Generate send goods confirm url
+- Generate forex trade url
+- Generate QR code url
 - Verify notify
 
 official document: https://b.alipay.com/order/techService.htm
@@ -87,7 +90,21 @@ Introduction: https://b.alipay.com/order/productDetail.htm?productId=20121112003
 	>>> alipay.create_partner_trade_by_buyer_url(**params)
 	'https://mapi.alipay.com/gateway.do?seller_email=.....'
 
-Generate batch trans notify url
+Generate standard mixed payment url
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+..
+
+    生成标准双接口支付链接
+
+Introduction: https://b.alipay.com/order/productDetail.htm?productId=2012111300373136
+
+.. code-block:: python
+
+    >>> alipay.trade_create_by_buyer_url(**params)
+    'https://mapi.alipay.com/gateway.do?seller_email=.....'
+
+Generate batch trans pay url
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ..
@@ -104,19 +121,19 @@ Introduction: https://b.alipay.com/order/productDetail.htm?productId=20121112003
 	... 'batch_no': 'batch_id', #转账流水号，须唯一
 	... 'notify_url': 'your_batch_notify_url' #异步通知地址
 	... }
-	>>> alipay.create_batch_trans_notify_ur(**params)
+	>>> alipay.create_batch_trans_notify_url(**params)
 	'https://mapi.alipay.com/gateway.do?seller_email=xxx&detail_data=....'
 
 Note: batch_list 为批量付款用户列表，具体格式如下例子：(如涉及中文请使用unicode字符)
 
 	>>> batch_list = ({'account': 'test@xxx.com', #支付宝账号
 	... 	           'name': u'测试', #支付宝用户姓名
-	...		   'fee': '100', #转账金额
-	...		   'note': 'test'},
+	...		           'fee': '100', #转账金额
+	...		           'note': 'test'},
 	...               {'account': 'test@xxx.com', #支付宝账号
 	... 	           'name': u'测试', #支付宝用户姓名
-	...		   'fee': '100', #转账金额
-	>>>		   'note': 'test'}) #转账原因
+	...		           'fee': '100', #转账金额
+	>>>		           'note': 'test'}) #转账原因
 
 Generate send goods confirm url
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -129,32 +146,47 @@ Introduction: https://cshall.alipay.com/support/help_detail.htm?help_id=491097
 
 .. code-block:: python
 
-	>>> params = {
-	... 'trade_no': 'your_alipay_trade_id',
-	... 'logistics_name': 'your_logicstic_name',
-	... 'transport_type': 'EXPRESS',
-	... 'invocie_no': 'your_invocie_no'
-	... }
-	>>> alipay.send_goods_confirm_by_platform(**params)
-	'https://mapi.alipay.com/gateway.do?sign=.....&trade_no=...'
+    >>> params = {
+    ... 'trade_no': 'your_alipay_trade_id',
+    ... 'logistics_name': 'your_logicstic_name',
+    ... 'transport_type': 'EXPRESS',
+    ... 'invocie_no': 'your_invocie_no'
+    ... }
+    >>> alipay.send_goods_confirm_by_platform(**params)
+    'https://mapi.alipay.com/gateway.do?sign=.....&trade_no=...'
 
-
-
-Generate Standard mixed payment url
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generate forex trade url
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ..
 
-    生成标准双接口支付链接
+    - Create website payment for foreigners (With QR code)
+    - Create mobile payment for foreigners
 
-Introduction: https://b.alipay.com/order/productDetail.htm?productId=2012111300373136
+Introduction: http://global.alipay.com/ospay/home.htm
 
 .. code-block:: python
 
-	>>> alipay.trade_create_by_buyer_url(**params)
-	'https://mapi.alipay.com/gateway.do?seller_email=.....'
+	>>> params = {
+    ... 'out_trade_no': 'your_order_id',
+    ... 'subject': 'your_order_subject',
+    ... 'logistics_type': 'DIRECT',
+    ... 'logistics_fee': '0',
+    ... 'logistics_payment': 'SELLER_PAY',
+    ... 'price': '10.00',
+    ... 'quantity': '12',
+    ... 'return_url': 'your_order_return_url',
+    ... 'notify_url': 'your_order_notify_url'
+    ... }
+    >>> # Create website payment for foreigners
+	>>> alipay.create_forex_trade_url(**params)
+	'https://mapi.alipay.com/gateway.do?service=create_forex_trade......'
+    >>> # Create mobile payment for foreigners
+    >>> alipay.create_forex_trade_wap_url(**params)
+    'https://mapi.alipay.com/gateway.do?service=create_forex_trade_wap......'
 
-Generate Creating QR code url
+
+Generate QR code url
 ~~~~~~~~~~~~~~~~~~~
 
 ..
