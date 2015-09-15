@@ -1,24 +1,19 @@
 # -*- coding: utf-8 -*-
-import requests
-import six
+from __future__ import absolute_import
 import time
-from pytz import timezone
 from hashlib import md5
 from datetime import datetime
 from xml.etree import ElementTree
 from collections import OrderedDict
+
+import six
+import requests
+from pytz import timezone
+from six.moves.urllib.parse import parse_qs, urlparse, unquote, urlencode
+
 from .exceptions import MissingParameter
 from .exceptions import ParameterValueError
 from .exceptions import TokenAuthorizationError
-if six.PY3:
-    from urllib.parse import parse_qs, urlparse, unquote
-else:
-    from urlparse import parse_qs, urlparse, unquote
-
-try:
-    from urllib import urlencode
-except ImportError:
-    from urllib.parse import urlencode
 
 
 def encode_dict(params):
