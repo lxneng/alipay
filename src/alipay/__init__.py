@@ -190,11 +190,8 @@ class Alipay(object):
         return signmethod
 
     def verify_notify(self, **kw):
-        sign = kw.pop('sign')
-        try:
-            kw.pop('sign_type')
-        except KeyError:
-            pass
+        sign = kw.pop('sign', '')
+        kw.pop('sign_type', '')
         signmethod = self.get_sign_method(**kw)
         if signmethod(kw) == sign:
             return self.check_notify_remotely(**kw)
