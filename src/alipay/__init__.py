@@ -56,15 +56,17 @@ class Alipay(object):
     def _check_params(self, params, names):
         if not all(k in params for k in names):
             raise MissingParameter('missing parameters')
-        return
 
     def _build_url(self, service, **kw):
         params = self.default_params.copy()
         params['service'] = service
         params.update(kw)
         signkey, signvalue, signdescription = self.sign_tuple
-        signmethod = getattr(self, '_generate_%s_sign' %
-                             signdescription.lower())
+        signmethod = getattr(
+            self,
+            '_generate_%s_sign' % signdescription.lower(),
+            None  # getattr raise AttributeError if not default provided
+        )
         if signmethod is None:
             raise NotImplementedError(
                 "This type '%s' of sign is not implemented yet."
@@ -78,7 +80,7 @@ class Alipay(object):
 
     def create_direct_pay_by_user_url(self, **kw):
         '''即时到帐'''
-        self._check_params(kw, ['out_trade_no', 'subject'])
+        self._check_params(kw, ('out_trade_no', 'subject'))
 
         if not kw.get('total_fee') and \
            not (kw.get('price') and kw.get('quantity')):
@@ -90,8 +92,8 @@ class Alipay(object):
 
     def create_partner_trade_by_buyer_url(self, **kw):
         '''担保交易'''
-        names = ['out_trade_no', 'subject', 'logistics_type',
-                 'logistics_fee', 'logistics_payment', 'price', 'quantity']
+        names = ('out_trade_no', 'subject', 'logistics_type',
+                 'logistics_fee', 'logistics_payment', 'price', 'quantity')
         self._check_params(kw, names)
         url = self._build_url('create_partner_trade_by_buyer', **kw)
         return url
@@ -101,10 +103,7 @@ class Alipay(object):
                                       tzinfo='Asia/Shanghai',
                                       **kw):
         '''批量付款'''
-        names = ['account_name',
-                 'batch_no',
-                 'notify_url'
-                 ]
+        names = ('account_name', 'batch_no', 'notify_url')
         self._check_params(kw, names)
         batch_no = kw['batch_no']
         detail_data = ''
@@ -128,8 +127,8 @@ class Alipay(object):
 
     def trade_create_by_buyer_url(self, **kw):
         '''标准双接口'''
-        names = ['out_trade_no', 'subject', 'logistics_type',
-                 'logistics_fee', 'logistics_payment', 'price', 'quantity']
+        names = ('out_trade_no', 'subject', 'logistics_type',
+                 'logistics_fee', 'logistics_payment', 'price', 'quantity')
         self._check_params(kw, names)
 
         url = self._build_url('trade_create_by_buyer', **kw)
@@ -137,7 +136,7 @@ class Alipay(object):
 
     def create_forex_trade_url(self, **kw):
         '''Create website payment for foreigners (With QR code)'''
-        names = ['out_trade_no', 'subject']
+        names = ('out_trade_no', 'subject')
         self._check_params(kw, names)
 
         url = self._build_url('create_forex_trade', **kw)
@@ -145,7 +144,7 @@ class Alipay(object):
 
     def create_forex_trade_wap_url(self, **kw):
         '''Create mobile payment for foreigners'''
-        names = ['out_trade_no', 'subject']
+        names = ('out_trade_no', 'subject')
         self._check_params(kw, names)
 
         url = self._build_url('create_forex_trade_wap', **kw)
@@ -153,7 +152,7 @@ class Alipay(object):
 
     def add_alipay_qrcode_url(self, **kw):
         '''二维码管理 - 添加'''
-        self._check_params(kw, ['biz_data', 'biz_type'])
+        self._check_params(kw, ('biz_data', 'biz_type'))
 
         utcnow = datetime.utcnow()
         shanghainow = timezone('Asia/Shanghai').fromutc(utcnow)
@@ -166,7 +165,7 @@ class Alipay(object):
 
     def send_goods_confirm_by_platform(self, **kw):
         ''''确认发货'''
-        names = ['trade_no', 'logistics_name']
+        names = ('trade_no', 'logistics_name')
         self._check_params(kw, names)
         url = self._build_url('send_goods_confirm_by_platform', **kw)
         return url
@@ -176,8 +175,11 @@ class Alipay(object):
 
     def get_sign_method(self, **kw):
         signkey, signvalue, signdescription = self.sign_tuple
-        signmethod = getattr(self, '_generate_%s_sign' %
-                             signdescription.lower())
+        signmethod = getattr(
+            self,
+            '_generate_%s_sign' % signdescription.lower(),
+            None
+        )
         if signmethod is None:
             raise NotImplementedError(
                 "This type '%s' of sign is not implemented yet."
@@ -194,9 +196,10 @@ class Alipay(object):
             return False
 
     def check_notify_remotely(self, **kw):
-        remote_result = requests.get(self.NOTIFY_GATEWAY_URL % (
-            self.pid,
-            kw['notify_id']), headers={'connection': 'close'}).text
+        remote_result = requests.get(
+            self.NOTIFY_GATEWAY_URL % (self.pid, kw['notify_id']),
+            headers={'connection': 'close'}
+        ).text
         return remote_result == 'true'
 
 '''Wap支付接口'''
@@ -221,8 +224,8 @@ class WapAlipay(Alipay):
 
     def create_direct_pay_token_url(self, **kw):
         '''即时到帐token'''
-        names = ['subject', 'out_trade_no', 'total_fee', 'seller_account_name',
-                 'call_back_url', ]
+        names = ('subject', 'out_trade_no', 'total_fee', 'seller_account_name',
+                 'call_back_url', )
         self._check_params(kw, names)
         req_data = ''.join([self._xmlnode % (key, value, key)
                             for (key, value) in six.iteritems(kw)])
@@ -287,8 +290,11 @@ class WapAlipay(Alipay):
     def get_sign_method(self, **kw):
         if 'notify_data' in kw:
             signkey, signvalue, signdescription = self.sign_tuple
-            signmethod = getattr(self, '_generate_%s_notify_sign' %
-                                 signdescription.lower())
+            signmethod = getattr(
+                self,
+                '_generate_%s_notify_sign' % signdescription.lower(),
+                None
+            )
             if signmethod is None:
                 raise NotImplementedError(
                     "This type '%s' of sign is not implemented yet."
