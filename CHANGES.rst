@@ -2,6 +2,12 @@ Changelog
 ==============================
 
 
+0.7.1 - Sep.16, 2015
+--------------------------------
+
+- Fix verify_notify raise KeyError: 'sign' bug
+  https://github.com/lxneng/alipay/pull/18
+
 0.7 - Sep.07, 2015
 --------------------------------
 
