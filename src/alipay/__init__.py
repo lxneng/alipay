@@ -9,7 +9,12 @@ from collections import OrderedDict
 import six
 import requests
 from pytz import timezone
-from six.moves.urllib.parse import parse_qs, urlparse, unquote, urlencode
+from six.moves.urllib.parse import (
+    parse_qs,
+    urlparse,
+    unquote,
+    urlencode
+)
 
 from .exceptions import MissingParameter
 from .exceptions import ParameterValueError
