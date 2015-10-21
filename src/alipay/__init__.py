@@ -62,10 +62,15 @@ class Alipay(object):
         if not all(k in params for k in names):
             raise MissingParameter('missing parameters')
 
-    def _build_url(self, service, **kw):
+    def _build_url(self, service, paramnames=None, **kw):
+        '''
+        创建带签名的请求地址，paramnames为需要包含的参数名，用于避免出现过多的参数，默认使用全部参数
+        '''
         params = self.default_params.copy()
         params['service'] = service
         params.update(kw)
+        if paramnames:
+            params = dict([(k, params[k]) for k in paramnames if k in params])
         signkey, signvalue, signdescription = self.sign_tuple
         signmethod = getattr(
             self,
@@ -207,6 +212,18 @@ class Alipay(object):
         ).text
         return remote_result == 'true'
 
+    def single_trade_query(self, **kw):
+        '''
+        单笔交易查询,返回xml.
+        out_trade_no或者trade_no参数必须有一个.
+        该接口需要联系支付宝客服签约.
+        '''
+        if 'trade_no' not in kw and 'out_trade_no' not in kw:
+            raise MissingParameter('missing parameters')
+        url = self._build_url('single_trade_query', paramnames=['service', 'partner', '_input_charset', 'sign', 'sign_type', 'trade_no', 'out_trade_no'], **kw)
+        remote_result = requests.get(url, headers={'connection': 'close'}).text
+        return remote_result
+
 '''Wap支付接口'''
 
 
@@ -257,7 +274,7 @@ class WapAlipay(Alipay):
                 raise TokenAuthorizationError(unquote(params['res_error'][0]))
         else:
             token = kw['token']
-        params = {'req_data': self._xmlnode %
+        params = {'req_data': self._xmlnode % 
                   (self.AUTH_ROOT_NODE,
                    (self._xmlnode % ('request_token', token, 'request_token')),
                    self.AUTH_ROOT_NODE)}
