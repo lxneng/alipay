@@ -196,3 +196,10 @@ class AlipayTests(unittest.TestCase):
                   'sign': '1f0a524dc51ed5bfc7ee2bac62e39534'}
         rt = self.wapalipay.verify_notify(**params)
         self.assertFalse(rt)
+
+    def test_single_trade_query(self):
+        ''' single_trade_query will response a ILLEGAL_PARTNER error xml document, like:
+        <?xml version="1.0" encoding="utf-8"?>
+        <alipay><is_success>F</is_success><error>ILLEGAL_PARTNER</error></alipay>
+        '''
+        self.assertIn('ILLEGAL_PARTNER', self.alipay.single_trade_query(out_trade_no='2015102012'))
