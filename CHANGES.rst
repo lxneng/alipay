@@ -1,6 +1,11 @@
 Changelog
 ==============================
 
+0.7.2 - Nov.1, 2015
+--------------------------------
+
+- add `single_trade_query` method
+  https://github.com/lxneng/alipay/pull/20
 
 0.7.1 - Sep.16, 2015
 --------------------------------

@@ -23,6 +23,7 @@ An Unofficial Alipay API for Python, It Contain these API:
 - Generate forex trade url
 - Generate QR code url
 - Verify notify
+- Single Trade Query
 
 official document: https://b.alipay.com/order/techService.htm
 
