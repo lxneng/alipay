@@ -220,6 +220,24 @@ verify notify from alipay server, example in Pyramid Application
             # this is a invalid notify
 
 
+Single Trade Query
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+..
+
+    单笔交易查询
+
+文档：http://wenku.baidu.com/link?url=WLjyz-H6AlfDLIU7kR4LcVNQgxSTMxX61fW0tDCE8yZbqXflCd0CVFsZaIKbRFDvVLaFlq0Q3wcJ935A7Kw-mRSs0iA4wQu8cLaCe5B8FIq
+
+.. code-block:: python
+
+	import re
+	xml = alipay.single_trade_query(out_trade_no="10000005")
+	res = re.findall('<trade_status>(\S+)</trade_status>', xml) # use RE to find trade_status, xml parsing is more useful, in fact.
+	status = None if not res else res[0]
+	print status # will print out TRADE_SUCCESS when trade is success
+
+
 Example in Pyramid Application
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
