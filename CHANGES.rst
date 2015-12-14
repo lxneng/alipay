@@ -1,6 +1,15 @@
 Changelog
 ==============================
 
+
+0.7.3 - Dec.14, 2015
+--------------------------------
+
+- replace open() calls with io.open() for Python 3 compatibility,
+  fix `UnicodeDecodeError`
+- add `create_direct_pay_by_user_url` doc for Wap site
+
+
 0.7.2 - Nov.1, 2015
 --------------------------------
 
