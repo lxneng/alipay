@@ -67,18 +67,6 @@ Introduction: https://b.alipay.com/order/productDetail.htm?productId=20121112003
 	_return_url', notify_url='your_order_notify_url')
 	'https://mapi.alipay.com/gateway.do?seller_email=.....'
 
-..
-
-    生成即时到账支付链接 (Wap)
-
-.. code-block:: python
-
-    >>> alipay_wap = Alipay(pid='your_alipay_pid', key='your_alipay_key', seller_id='your_seller_id')
-    >>> alipay_wap.create_direct_pay_by_user_url(out_trade_no='your_order_id', subject='your_order_subject', total_fee='100.0', return_url='your_order
-    _return_url', notify_url='your_order_notify_url')
-    'https://mapi.alipay.com/gateway.do?seller_email=.....'
-
-
 Generate partner trade payment url
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
