@@ -100,6 +100,34 @@ class Alipay(object):
         url = self._build_url('create_direct_pay_by_user', **kw)
         return url
 
+    def refund_fastpay_by_platform_pwd(self,
+                                       batch_list=(),
+                                       tzinfo='Asia/Shanghai',
+                                       **kw):
+        '''即时到账有密退款'''
+        self._check_params(kw, ('batch_no'))
+
+        batch_no = kw['batch_no']
+        detail_data = []
+        total_num = 0
+        print(batch_list)
+        for itm in batch_list:
+            if itm == None:
+                continue
+            total_num += 1
+            detail_data.append('^'.join((itm['trade_no'],
+                                     str(itm['fee']),
+                                     itm['note'])))
+
+        kw['detail_data'] = '#'.join(detail_data)
+        utcnow = datetime.utcnow()
+        local_now = timezone(tzinfo).fromutc(utcnow)
+        kw['batch_num'] = total_num
+        kw['email'] = self.default_params['seller_email']
+        kw['refund_date'] = local_now.strftime('%Y-%m-%d %H:%M:%S')
+        url = self._build_url('refund_fastpay_by_platform_pwd', **kw)
+        return url
+
     def create_partner_trade_by_buyer_url(self, **kw):
         '''担保交易'''
         names = ('out_trade_no', 'subject', 'logistics_type',
