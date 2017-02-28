@@ -239,6 +239,35 @@ Single Trade Query
 	status = None if not res else res[0]
 	print status # will print out TRADE_SUCCESS when trade is success
 
+Generate Refund With Pwd URL
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+..
+
+    生成即时到账有密退款链接
+
+Introduction: https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.XRddqH&treeId=62&articleId=104744&docType=1
+
+.. code-block:: python
+
+    >>> params = {
+    ... 'batch_list': (), #批量退款数据集
+    ... 'batch_no': 'batch_id', #退款批次号，须唯一
+    ... 'notify_url': 'your_batch_notify_url' #异步通知地址
+    ... }
+    >>> alipay.refund_fastpay_by_platform_pwd(**params)
+    'https://mapi.alipay.com/gateway.do?seller_email=xxx&detail_data=....'
+
+Note: batch_list 为批量退款数据集，具体格式如下例子：(如涉及中文请使用unicode字符)
+
+.. code-block:: python
+
+    >>> batch_list = ({'trade_no': 'xxxxxxxx', #原付款支付宝交易号
+    ...                'fee': '100', #退款总金额
+    ...                'note': 'test'}, #退款原因
+    ...               {'trade_no': 'xxxxxxxx', #原付款支付宝交易号
+    ...                'fee': '100', #退款总金额
+    ...                'note': 'test'}) #退款原因
 
 Example in Pyramid Application
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
