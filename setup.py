@@ -9,7 +9,7 @@ README = io.open(os.path.join(here, 'README.rst'), encoding='UTF-8').read()
 CHANGES = io.open(os.path.join(here, 'CHANGES.rst'), encoding='UTF-8').read()
 
 setup(name='alipay',
-      version='0.7.3',
+      version='0.7.4',
       description='An Unofficial Alipay API for Python',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[

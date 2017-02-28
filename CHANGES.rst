@@ -2,6 +2,12 @@ Changelog
 ==============================
 
 
+0.7.4 - Feb.28, 2017
+--------------------------------
+
+- add `refund_fastpay_by_platform_pwd` method
+  https://github.com/lxneng/alipay/pull/26
+
 0.7.3 - Dec.14, 2015
 --------------------------------
 
