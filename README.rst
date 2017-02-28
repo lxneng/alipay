@@ -24,6 +24,7 @@ An Unofficial Alipay API for Python, It Contain these API:
 - Generate QR code url
 - Verify notify
 - Single Trade Query
+- Generate Refund With Pwd URL
 
 official document: https://b.alipay.com/order/techService.htm
 
